@@ -1,0 +1,197 @@
+{
+  "id": "9d5f1c8f",
+  "goal": "Identify overdue tasks and prepare a weekly operations report.",
+  "status": "completed",
+  "final_answer": "### Summary of Overdue Tasks & Weekly Operations (as of October 15, 2026)\n\nThe weekly analysis across all 30 tracked tasks has been completed, and both the Markdown and Excel reports have been generated and saved:\n- **Markdown Report:** `reports/weekly_operations_report___2026_10_15_2026-10-15.md`\n- **Excel Report:** `reports/weekly_operations_report___2026_10_15_2026-10-15.xlsx`\n\n---\n\n### Key Operational Findings\n\n1. **Overdue Task Status:**\n   - **18 open tasks are overdue** (67% of open work).\n   - **By Priority:** 9 High, 5 Medium, 3 Low, and 1 Unknown priority.\n   - **Longest Delays:**\n     - `T009` (*Renew vendor contracts* \u2014 Suresh Patil): 21 days overdue (High)\n     - `T029` (*Update disaster recovery plan* \u2014 Vikram Rao): 16 days overdue (Low)\n     - `T010` (*Audit warehouse inventory* \u2014 Suresh Patil): 14 days overdue (High)\n     - `T001` (*Prepare payroll for the month* \u2014 Priya Sharma): 12 days overdue (High)\n     - `T011` (*Fix delivery routing sheet* \u2014 Suresh Patil): 11 days overdue (High, Blocked)\n\n2. **Primary Operational Bottlenecks:**\n   - **Slowest Department:** **Operations** has 6 overdue tasks with an average delay of 10.8 days (maximum 21 days).\n   - **Most Overloaded Owner:** **Suresh Patil** (Operations) holds 6 open tasks, 5 of which are overdue (including 3 High Priority and 1 Blocked task).\n   - **Blocked Work:** 4 tasks are currently blocked and overdue:\n     - `T011` (Operations / Suresh Patil) \u2014 11 days overdue (High)\n     - `T020` (Finance / Amit Bhosale) \u2014 5 days overdue (High)\n     - `T023` (Finance / Amit Bhosale) \u2014 10 days overdue (Medium)\n     - `T008` (Sales / Neha Kulkarni) \u2014 6 days overdue (Medium)\n\n3. **Data Quality & Hygiene Issues:**\n   - **Missing Deadlines:** \n     - `T021` (*File GST returns*, Finance, Amit Bhosale, High Priority, Pending)\n     - `T027` (*Migrate shared drive to cloud*, IT, Pooja Iyer, Medium Priority, Pending)\n   - **Incomplete / Unknown Metadata:**\n     - `T028` (*Vendor security review*, IT, Pooja Iyer) has an `Unknown` status and `Unknown` priority (deadline 2026-10-09, 6 days overdue).\n\n---\n\n### Immediate Recommendations\n1. **Urgent Payroll Intervention:** Address `T001` (*Prepare payroll for the month*) immediately to prevent employee compensation issues.\n2. **Clear Finance Blockers:** Support Amit Bhosale in resolving blockers on bank reconciliation (`T020`) and vendor payments (`T023`).\n3. **Rebalance Operations Load:** Reassign or provide operational support to Suresh Patil to clear the contract and warehouse inventory backlog.\n4. **Data Cleanup:** Input statutory deadlines for GST filing (`T021`) and cloud migration (`T027`), and rectify the status/priority of `T028`.",
+  "pending": [],
+  "log": [
+    {
+      "ts": "2026-10-15T10:23:56",
+      "run_id": "9d5f1c8f",
+      "type": "goal",
+      "goal": "Identify overdue tasks and prepare a weekly operations report."
+    },
+    {
+      "ts": "2026-10-15T10:24:03",
+      "run_id": "9d5f1c8f",
+      "type": "tool_call",
+      "step": 1,
+      "tool": "get_overdue_tasks",
+      "args": {
+        "as_of": "2026-10-15"
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:03",
+      "run_id": "9d5f1c8f",
+      "type": "tool_result",
+      "step": 1,
+      "tool": "get_overdue_tasks",
+      "result": {
+        "truncated": "{\"as_of\": \"2026-10-15\", \"overdue_count\": 18, \"overdue_tasks\": [{\"task_id\": \"T009\", \"task\": \"Renew vendor contracts\", \"department\": \"Operations\", \"owner\": \"Suresh Patil\", \"deadline\": \"2026-09-24\", \"status\": \"Pending\", \"priority\": \"High\", \"days_overdue\": 21}, {\"task_id\": \"T029\", \"task\": \"Update disaster recovery plan\", \"department\": \"IT\", \"owner\": \"Vikram Rao\", \"deadline\": \"2026-09-29\", \"status\": \"Pending\", \"priority\": \"Low\", \"days_overdue\": 16}, {\"task_id\": \"T010\", \"task\": \"Audit warehouse inventory\", \"department\": \"Operations\", \"owner\": \"Suresh Patil\", \"deadline\": \"2026-10-01\", \"status\": \"In Progress\", \"priority\": \"High\", \"days_overdue\": 14}, {\"task_id\": \"T001\", \"task\": \"Prepare payroll for the month\", \"department\": \"HR\", \"owner\": \"Priya Sharma\", \"deadline\": \"2026-10-03\", \"status\": \"Pending\", \"priority\": \"High\", \"days_overdue\": 12}, {\"task_id\": \"T011\", \"task\": \"Fix delivery routing sheet\", \"department\": \"Operations\", \"owner\": \"Suresh Patil\", \"deadline\": \"2026-10-04\", \"status\": \"Blocked\", \"priority\": \"High\", \"days_overdue\": 11}, {\"task_id\": \"T023\", \"task\": \"Process vendor payments\", \"department\": \"Finance\", \"owner\": \"Amit Bhosale\", \"deadline\": \"2026-10-05\", \"status\": \"Blocked\", \"priority\": \"Medium\", \"days_overdue\": 10}, {\"task_id\": \"T005\", \"task\": \"Follow up with Q3 leads\", \"department\": \"Sales\", \"owner\": \"Ankit Desai\", \"deadline\": \"2026-10-06\", \"status\": \"Pending\", \"priority\": \"High\", \"days_overdue\": 9}, {\"task_id\": \"T012\", \"task\": \"Negotiate freight rates\", \"department\": \"Op..."
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:03",
+      "run_id": "9d5f1c8f",
+      "type": "tool_call",
+      "step": 1,
+      "tool": "summarize_by_department",
+      "args": {}
+    },
+    {
+      "ts": "2026-10-15T10:24:03",
+      "run_id": "9d5f1c8f",
+      "type": "tool_result",
+      "step": 1,
+      "tool": "summarize_by_department",
+      "result": {
+        "as_of": "2026-10-15",
+        "departments": {
+          "Admin": {
+            "total": 3,
+            "completed": 0,
+            "in_progress": 0,
+            "pending": 3,
+            "blocked": 0,
+            "overdue": 1
+          },
+          "Finance": {
+            "total": 4,
+            "completed": 0,
+            "in_progress": 1,
+            "pending": 1,
+            "blocked": 2,
+            "overdue": 2
+          },
+          "HR": {
+            "total": 5,
+            "completed": 1,
+            "in_progress": 2,
+            "pending": 2,
+            "blocked": 0,
+            "overdue": 3
+          },
+          "IT": {
+            "total": 6,
+            "completed": 1,
+            "in_progress": 1,
+            "pending": 3,
+            "blocked": 0,
+            "overdue": 3
+          },
+          "Operations": {
+            "total": 8,
+            "completed": 1,
+            "in_progress": 2,
+            "pending": 4,
+            "blocked": 1,
+            "overdue": 6
+          },
+          "Sales": {
+            "total": 4,
+            "completed": 0,
+            "in_progress": 1,
+            "pending": 2,
+            "blocked": 1,
+            "overdue": 3
+          }
+        }
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:03",
+      "run_id": "9d5f1c8f",
+      "type": "tool_call",
+      "step": 1,
+      "tool": "analyze_bottlenecks",
+      "args": {}
+    },
+    {
+      "ts": "2026-10-15T10:24:03",
+      "run_id": "9d5f1c8f",
+      "type": "tool_result",
+      "step": 1,
+      "tool": "analyze_bottlenecks",
+      "result": {
+        "truncated": "{\"as_of\": \"2026-10-15\", \"highlights\": {\"most_overloaded_owner\": \"Suresh Patil\", \"slowest_department\": \"Operations\"}, \"workload_by_owner\": [{\"owner\": \"Suresh Patil\", \"open_tasks\": 6, \"overdue\": 5, \"high_priority_open\": 3, \"blocked\": 1}, {\"owner\": \"Amit Bhosale\", \"open_tasks\": 4, \"overdue\": 2, \"high_priority_open\": 2, \"blocked\": 2}, {\"owner\": \"Priya Sharma\", \"open_tasks\": 3, \"overdue\": 2, \"high_priority_open\": 2, \"blocked\": 0}, {\"owner\": \"Ankit Desai\", \"open_tasks\": 2, \"overdue\": 2, \"high_priority_open\": 2, \"blocked\": 0}, {\"owner\": \"Vikram Rao\", \"open_tasks\": 2, \"overdue\": 2, \"high_priority_open\": 1, \"blocked\": 0}, {\"owner\": \"Karan Mehta\", \"open_tasks\": 3, \"overdue\": 1, \"high_priority_open\": 1, \"blocked\": 0}, {\"owner\": \"Pooja Iyer\", \"open_tasks\": 3, \"overdue\": 1, \"high_priority_open\": 1, \"blocked\": 0}, {\"owner\": \"Neha Kulkarni\", \"open_tasks\": 2, \"overdue\": 1, \"high_priority_open\": 0, \"blocked\": 1}, {\"owner\": \"Meera Joshi\", \"open_tasks\": 1, \"overdue\": 1, \"high_priority_open\": 0, \"blocked\": 0}, {\"owner\": \"Rahul Verma\", \"open_tasks\": 1, \"overdue\": 1, \"high_priority_open\": 0, \"blocked\": 0}], \"blocked_tasks\": [{\"task_id\": \"T011\", \"task\": \"Fix delivery routing sheet\", \"department\": \"Operations\", \"owner\": \"Suresh Patil\", \"deadline\": \"2026-10-04\", \"status\": \"Blocked\", \"priority\": \"High\", \"days_overdue\": 11}, {\"task_id\": \"T020\", \"task\": \"Reconcile bank statements\", \"department\": \"Finance\", \"owner\": \"Amit Bhosale\", \"deadline\": \"2026-10-10\", \"status\": \"Blocked\", \"priority\": \"High\", \"days_..."
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:05",
+      "run_id": "9d5f1c8f",
+      "type": "tool_call",
+      "step": 2,
+      "tool": "read_tasks",
+      "args": {}
+    },
+    {
+      "ts": "2026-10-15T10:24:05",
+      "run_id": "9d5f1c8f",
+      "type": "tool_result",
+      "step": 2,
+      "tool": "read_tasks",
+      "result": {
+        "truncated": "{\"count\": 30, \"tasks\": [{\"task_id\": \"T001\", \"task\": \"Prepare payroll for the month\", \"department\": \"HR\", \"owner\": \"Priya Sharma\", \"deadline\": \"2026-10-03\", \"status\": \"Pending\", \"priority\": \"High\"}, {\"task_id\": \"T002\", \"task\": \"Schedule onboarding for new hires\", \"department\": \"HR\", \"owner\": \"Priya Sharma\", \"deadline\": \"2026-10-20\", \"status\": \"In Progress\", \"priority\": \"Medium\"}, {\"task_id\": \"T003\", \"task\": \"Update employee handbook\", \"department\": \"HR\", \"owner\": \"Rahul Verma\", \"deadline\": \"2026-10-12\", \"status\": \"In Progress\", \"priority\": \"Low\"}, {\"task_id\": \"T004\", \"task\": \"Conduct exit interviews\", \"department\": \"HR\", \"owner\": \"Rahul Verma\", \"deadline\": \"2026-09-20\", \"status\": \"Completed\", \"priority\": \"Medium\"}, {\"task_id\": \"T005\", \"task\": \"Follow up with Q3 leads\", \"department\": \"Sales\", \"owner\": \"Ankit Desai\", \"deadline\": \"2026-10-06\", \"status\": \"Pending\", \"priority\": \"High\"}, {\"task_id\": \"T006\", \"task\": \"Send proposal to Acme Corp\", \"department\": \"Sales\", \"owner\": \"Ankit Desai\", \"deadline\": \"2026-10-13\", \"status\": \"In Progress\", \"priority\": \"High\"}, {\"task_id\": \"T007\", \"task\": \"Update CRM contact records\", \"department\": \"Sales\", \"owner\": \"Neha Kulkarni\", \"deadline\": \"2026-10-25\", \"status\": \"Pending\", \"priority\": \"Low\"}, {\"task_id\": \"T008\", \"task\": \"Prepare monthly sales forecast\", \"department\": \"Sales\", \"owner\": \"Neha Kulkarni\", \"deadline\": \"2026-10-09\", \"status\": \"Blocked\", \"priority\": \"Medium\"}, {\"task_id\": \"T009\", \"task\": \"Renew vendor contracts\", \"department\": \"Opera..."
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:17",
+      "run_id": "9d5f1c8f",
+      "type": "tool_call",
+      "step": 3,
+      "tool": "save_excel_report",
+      "args": {
+        "narrative": "Weekly Operations Summary as of 2026-10-15: Out of 30 total tasks across the organization, 18 are overdue (including 9 high-priority tasks) and 4 are blocked. Operations is currently the primary operational bottleneck with 6 overdue tasks (averaging 10.8 days delay) and Suresh Patil carries the heaviest workload (6 open tasks, 5 overdue). In Finance, Amit Bhosale has 2 blocked tasks out of 4 open. Data hygiene concerns include 2 tasks missing deadlines (T021, T027) and 1 task with unrecognised status/priority (T028).",
+        "title": "Weekly Operations Report - 2026-10-15"
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:17",
+      "run_id": "9d5f1c8f",
+      "type": "tool_result",
+      "step": 3,
+      "tool": "save_excel_report",
+      "result": {
+        "saved_to": "reports/weekly_operations_report___2026_10_15_2026-10-15.xlsx",
+        "sheets": [
+          "Summary",
+          "Departments",
+          "Overdue",
+          "Owner workload",
+          "Blocked",
+          "Delay by department"
+        ],
+        "overdue_rows": 18
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:32",
+      "run_id": "9d5f1c8f",
+      "type": "tool_call",
+      "step": 4,
+      "tool": "save_report",
+      "args": {
+        "title": "Weekly Operations Report - 2026-10-15",
+        "markdown": "# Weekly Operations Report \u2014 October 15, 2026\n\n## Executive Summary\nAs of **October 15, 2026**, the task tracker reflects **30 total tasks** across 6 departments. Of these:\n- **Completed:** 3 tasks (10%)\n- **Open Active Tasks:** 27 tasks (90%)\n  - **In Progress:** 7\n  - **Pending:** 15\n  - **Blocked:** 4\n  - **Unknown Status:** 1 (Task T028)\n- **Overdue Tasks:** 18 tasks (60% of all tasks, 67% of open tasks)\n  - **High Priority Overdue:** 9 tasks\n  - **Medium Priority Overdue:** 5 tasks\n  - **Low Priority Overdue:** 3 tasks\n  - **Unknown Priority Overdue:** 1 task\n- **Data Quality Alerts:** 2 open tasks have no assigned deadline; 1 task has an unrecognized status and priority.\n\nOperations and Finance represent the primary operational bottlenecks, with heavy task concentration on two owners: Suresh Patil and Amit Bhosale.\n\n---\n\n## Departmental Summary\n\n| Department | Total Tasks | Completed | In Progress | Pending | Blocked | Overdue | Avg Delay (Days) | Max Delay (Days) |\n| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n| **Operations** | 8 | 1 | 2 | 4 | 1 | 6 | 10.8 | 21 |\n| **IT** | 6 | 1 | 1 | 3 | 0 | 3 | 8.0 | 16 |\n| **Finance** | 4 | 0 | 1 | 1 | 2 | 2 | 7.5 | 10 |\n| **HR** | 5 | 1 | 2 | 2 | 0 | 3 | 6.3 | 12 |\n| **Sales** | 4 | 0 | 1 | 2 | 1 | 3 | 5.7 | 9 |\n| **Admin** | 3 | 0 | 0 | 3 | 0 | 1 | 1.0 | 1 |\n| **Total** | **30** | **3** | **7** | **15** | **4** | **18** | \u2014 | \u2014 |\n\n*Note: IT includes 1 task with unrecognised status (`T028`), which is overdue by 6 days.*\n\n---\n\n## Overdue Tasks Breakdown (18 Tasks)\n\n| Task ID | Task Description | Department | Owner | Priority | Status | Deadline | Days Overdue |\n| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: |\n| **T009** | Renew vendor contracts | Operations | Suresh Patil | High | Pending | 2026-09-24 | 21 |\n| **T029** | Update disaster recovery plan | IT | Vikram Rao | Low | Pending | 2026-09-29 | 16 |\n| **T010** | Audit warehouse inventory | Operations | Suresh Patil | High | In Progress | 2026-10-01 | 14 |\n| **T001** | Prepare payroll for the month | HR | Priya Sharma | High | Pending | 2026-10-03 | 12 |\n| **T011** | Fix delivery routing sheet | Operations | Suresh Patil | High | Blocked | 2026-10-04 | 11 |\n| **T023** | Process vendor payments | Finance | Amit Bhosale | Medium | Blocked | 2026-10-05 | 10 |\n| **T005** | Follow up with Q3 leads | Sales | Ankit Desai | High | Pending | 2026-10-06 | 9 |\n| **T012** | Negotiate freight rates | Operations | Suresh Patil | Medium | Pending | 2026-10-07 | 8 |\n| **T015** | Review supplier invoices | Operations | Meera Joshi | Medium | Pending | 2026-10-08 | 7 |\n| **T008** | Prepare monthly sales forecast | Sales | Neha Kulkarni | Medium | Blocked | 2026-10-09 | 6 |\n| **T028** | Vendor security review | IT | Pooja Iyer | *Unknown* | *Unknown* | 2026-10-09 | 6 |\n| **T020** | Reconcile bank statements | Finance | Amit Bhosale | High | Blocked | 2026-10-10 | 5 |\n| **T013** | Update safety checklist | Operations | Suresh Patil | Low | In Progress | 2026-10-11 | 4 |\n| **T030** | Draft Q4 hiring plan | HR | Priya Sharma | High | Pending | 2026-10-11 | 4 |\n| **T003** | Update employee handbook | HR | Rahul Verma | Low | In Progress | 2026-10-12 | 3 |\n| **T024** | Patch internal servers | IT | Vikram Rao | High | In Progress | 2026-10-13 | 2 |\n| **T006** | Send proposal to Acme Corp | Sales | Ankit Desai | High | In Progress | 2026-10-13 | 2 |\n| **T017** | Book Q4 board meeting room | Admin | Karan Mehta | Medium | Pending | 2026-10-14 | 1 |\n\n---\n\n## Critical Bottlenecks & Workload Analysis\n\n### 1. Owner Workload & Capacity Constraints\n- **Suresh Patil (Operations):** Heaviest bottleneck in the organization.\n  - Open tasks: 6 (5 overdue, 3 high-priority, 1 blocked).\n  - Delay range: Up to 21 days overdue.\n  - Action: Immediate workload rebalancing or administrative support required.\n- **Amit Bhosale (Finance):** Serious operational blockage.\n  - Open tasks: 4 (2 overdue, 2 blocked, 2 high-priority).\n  - Both vendor payments (`T023`) and bank reconciliations (`T020`) are blocked, creating financial and compliance risks.\n- **Priya Sharma (HR):**\n  - Open tasks: 3 (2 overdue, both High Priority: Monthly Payroll `T001` overdue by 12 days, and Q4 Hiring Plan `T030` overdue by 4 days).\n- **Ankit Desai (Sales):**\n  - Open tasks: 2 (both overdue and High Priority: Q3 Leads `T005` overdue 9 days, Acme Corp Proposal `T006` overdue 2 days).\n\n### 2. Blocked Tasks Requiring Unblocking\nThere are 4 blocked tasks, all of which are overdue:\n1. **T011 (Operations / Suresh Patil):** Fix delivery routing sheet \u2014 *High Priority, 11 days overdue*.\n2. **T020 (Finance / Amit Bhosale):** Reconcile bank statements \u2014 *High Priority, 5 days overdue*.\n3. **T023 (Finance / Amit Bhosale):** Process vendor payments \u2014 *Medium Priority, 10 days overdue*.\n4. **T008 (Sales / Neha Kulkarni):** Prepare monthly sales forecast \u2014 *Medium Priority, 6 days overdue*.\n\n### 3. Needs Attention First (Top Ranked)\nBased on priority, blocked status, and days overdue, the following 10 tasks require urgent intervention:\n1. `T009` \u2014 Renew vendor contracts (Suresh Patil | High | 21 days)\n2. `T010` \u2014 Audit warehouse inventory (Suresh Patil | High | 14 days)\n3. `T001` \u2014 Prepare payroll for the month (Priya Sharma | High | 12 days)\n4. `T011` \u2014 Fix delivery routing sheet (Suresh Patil | High | Blocked | 11 days)\n5. `T005` \u2014 Follow up with Q3 leads (Ankit Desai | High | 9 days)\n6. `T020` \u2014 Reconcile bank statements (Amit Bhosale | High | Blocked | 5 days)\n7. `T030` \u2014 Draft Q4 hiring plan (Priya Sharma | High | 4 days)\n8. `T006` \u2014 Send proposal to Acme Corp (Ankit Desai | High | 2 days)\n9. `T024` \u2014 Patch internal servers (Vikram Rao | High | 2 days)\n10. `T023` \u2014 Process vendor payments (Amit Bhosale | Medium | Blocked | 10 days)\n\n---\n\n## Data Hygiene & System Anomalies\nDuring the audit, the following incomplete records were identified in the tracker:\n1. **Missing Deadlines:**\n   - `T021`: File GST returns (Finance, Amit Bhosale, High Priority, Pending) \u2014 *Critical tax compliance task missing deadline.*\n   - `T027`: Migrate shared drive to cloud (IT, Pooja Iyer, Medium Priority, Pending).\n2. **Unrecognised Status & Priority:**\n   - `T028`: Vendor security review (IT, Pooja Iyer) \u2014 Has `Unknown` status and `Unknown` priority; deadline was 2026-10-09 (6 days overdue).\n\n---\n\n## Recommended Action Plan\n1. **Unblock Finance & Operations:** Hold immediate standups with Amit Bhosale and Suresh Patil to clear blockers on `T011`, `T020`, and `T023`.\n2. **Payroll Escalation:** Address `T001` (Payroll) with Priya Sharma immediately to ensure employee compensation compliance.\n3. **Data Remediation:**\n   - Set statutory deadline for `T021` (GST returns).\n   - Set target completion date for `T027`.\n   - Update status and priority for `T028` in the tracker.\n"
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:32",
+      "run_id": "9d5f1c8f",
+      "type": "tool_result",
+      "step": 4,
+      "tool": "save_report",
+      "result": {
+        "saved_to": "reports/weekly_operations_report___2026_10_15_2026-10-15.md"
+      }
+    },
+    {
+      "ts": "2026-10-15T10:24:39",
+      "run_id": "9d5f1c8f",
+      "type": "final",
+      "step": 5,
+      "answer": "### Summary of Overdue Tasks & Weekly Operations (as of October 15, 2026)\n\nThe weekly analysis across all 30 tracked tasks has been completed, and both the Markdown and Excel reports have been generated and saved:\n- **Markdown Report:** `reports/weekly_operations_report___2026_10_15_2026-10-15.md`\n- **Excel Report:** `reports/weekly_operations_report___2026_10_15_2026-10-15.xlsx`\n\n---\n\n### Key Operational Findings\n\n1. **Overdue Task Status:**\n   - **18 open tasks are overdue** (67% of open work).\n   - **By Priority:** 9 High, 5 Medium, 3 Low, and 1 Unknown priority.\n   - **Longest Delays:**\n     - `T009` (*Renew vendor contracts* \u2014 Suresh Patil): 21 days overdue (High)\n     - `T029` (*Update disaster recovery plan* \u2014 Vikram Rao): 16 days overdue (Low)\n     - `T010` (*Audit warehouse inventory* \u2014 Suresh Patil): 14 days overdue (High)\n     - `T001` (*Prepare payroll for the month* \u2014 Priya Sharma): 12 days overdue (High)\n     - `T011` (*Fix delivery routing sheet* \u2014 Suresh Patil): 11 days overdue (High, Blocked)\n\n2. **Primary Operational Bottlenecks:**\n   - **Slowest Department:** **Operations** has 6 overdue tasks with an average delay of 10.8 days (maximum 21 days).\n   - **Most Overloaded Owner:** **Suresh Patil** (Operations) holds 6 open tasks, 5 of which are overdue (including 3 High Priority and 1 Blocked task).\n   - **Blocked Work:** 4 tasks are currently blocked and overdue:\n     - `T011` (Operations / Suresh Patil) \u2014 11 days overdue (High)\n     - `T020` (Finance / Amit Bhosale) \u2014 5 days overdue (High)\n     - `T023` (Finance / Amit Bhosale) \u2014 10 days overdue (Medium)\n     - `T008` (Sales / Neha Kulkarni) \u2014 6 days overdue (Medium)\n\n3. **Data Quality & Hygiene Issues:**\n   - **Missing Deadlines:** \n     - `T021` (*File GST returns*, Finance, Amit Bhosale, High Priority, Pending)\n     - `T027` (*Migrate shared drive to cloud*, IT, Pooja Iyer, Medium Priority, Pending)\n   - **Incomplete / Unknown Metadata:**\n     - `T028` (*Vendor security review*, IT, Pooja Iyer) has an `Unknown` status and `Unknown` priority (deadline 2026-10-09, 6 days overdue).\n\n---\n\n### Immediate Recommendations\n1. **Urgent Payroll Intervention:** Address `T001` (*Prepare payroll for the month*) immediately to prevent employee compensation issues.\n2. **Clear Finance Blockers:** Support Amit Bhosale in resolving blockers on bank reconciliation (`T020`) and vendor payments (`T023`).\n3. **Rebalance Operations Load:** Reassign or provide operational support to Suresh Patil to clear the contract and warehouse inventory backlog.\n4. **Data Cleanup:** Input statutory deadlines for GST filing (`T021`) and cloud migration (`T027`), and rectify the status/priority of `T028`."
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Workflow Agent</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#1c2430; --muted:#667085; --line:#e4e7ec; --accent:#2f5bea; --bad:#d92d20; --ok:#12b76a; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  header { padding:18px 24px; background:var(--card); border-bottom:1px solid var(--line); }
+  header h1 { margin:0; font-size:20px; }
+  main { max-width:1100px; margin:0 auto; padding:20px; display:grid; gap:16px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; }
+  h2 { margin:0 0 10px; font-size:16px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; }
+  input[type=text] { flex:1; min-width:240px; padding:9px 12px; border:1px solid var(--line); border-radius:8px; font:inherit; }
+  button { padding:9px 14px; border:0; border-radius:8px; background:var(--accent); color:#fff; font:inherit; cursor:pointer; }
+  button.ghost { background:#eef1f6; color:var(--ink); }
+  button.bad { background:var(--bad); }
+  button:disabled { opacity:.5; cursor:wait; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+  .stat { border:1px solid var(--line); border-radius:8px; padding:10px; }
+  .stat b { display:block; font-size:22px; }
+  .stat small { color:var(--muted); }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:600; }
+  .tag { padding:1px 8px; border-radius:99px; font-size:12px; background:#eef1f6; }
+  .overdue { color:var(--bad); font-weight:600; }
+  pre { white-space:pre-wrap; margin:0; font:13px/1.45 ui-monospace, monospace; }
+  .log { max-height:300px; overflow:auto; background:#0f172a; color:#e2e8f0; padding:12px; border-radius:8px; }
+  .pending { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); }
+  .muted { color:var(--muted); }
+  #msg { margin-top:8px; }
+</style>
+</head>
+<body>
+<header><h1>AI Business Workflow Automation Agent</h1></header>
+<main>
+  <section>
+    <h2>Give the agent a goal</h2>
+    <div class="row">
+      <input id="goal" type="text" value="Identify overdue tasks and prepare a weekly operations report.">
+      <button id="run">Run agent</button>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <input id="file" type="file" accept=".xlsx,.csv">
+      <button class="ghost" id="upload">Upload tracker</button>
+    </div>
+    <div id="msg" class="muted"></div>
+  </section>
+
+  <section>
+    <h2>Data source <span id="live" class="tag">checking</span></h2>
+    <div class="row">
+      <input id="srcPath" type="text" placeholder="Path to your Excel file, e.g. C:\Users\you\Documents\tasks.xlsx">
+      <button class="ghost" id="useSrc">Use this file</button>
+      <button class="ghost" id="resetSrc">Reset to default</button>
+    </div>
+    <div id="srcInfo" class="muted" style="margin-top:8px"></div>
+  </section>
+
+  <section><h2>Dashboard</h2><div id="stats" class="cards"></div></section>
+
+  <section><h2>Bottlenecks</h2><div id="bn" class="muted">Loading...</div></section>
+
+  <section id="resultBox" hidden>
+    <h2>Agent result <span id="status" class="tag"></span></h2>
+    <pre id="answer"></pre>
+    <div id="pendingBox" hidden style="margin-top:14px"><h2>Proposed changes (need your approval)</h2><div id="pending"></div></div>
+  </section>
+
+  <section id="logBox" hidden><h2>Execution log</h2><div class="log"><pre id="log"></pre></div></section>
+
+  <section><h2>Tasks</h2><div style="overflow:auto"><table id="tasks"></table></div></section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+let runId = null;
+
+function cell(text, cls) { const td = document.createElement('td'); td.textContent = text ?? ''; if (cls) td.className = cls; return td; }
+function say(text) { $('msg').textContent = text; }
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.detail || r.statusText);
+  return data;
+}
+
+async function loadDashboard() {
+  try {
+    const d = await api('/api/dashboard');
+    const stats = $('stats'); stats.replaceChildren();
+    const total = d.tasks.length;
+    const add = (label, value) => {
+      const div = document.createElement('div'); div.className = 'stat';
+      const b = document.createElement('b'); b.textContent = value;
+      const s = document.createElement('small'); s.textContent = label;
+      div.append(b, s); stats.append(div);
+    };
+    add('Total tasks', total);
+    add('Overdue', d.overdue.overdue_count);
+    add('Missing deadline', d.overdue.tasks_with_missing_deadline.length);
+    for (const [dept, s] of Object.entries(d.summary)) add(`${dept}: ${s.completed}/${s.total} done`, `${s.overdue} overdue`);
+
+    const overdueIds = new Set(d.overdue.overdue_tasks.map(t => t.task_id));
+    const table = $('tasks'); table.replaceChildren();
+    const head = table.insertRow();
+    ['ID','Task','Dept','Owner','Deadline','Status','Priority'].forEach(h => { const th = document.createElement('th'); th.textContent = h; head.append(th); });
+    d.tasks.forEach(t => {
+      const tr = table.insertRow();
+      const late = overdueIds.has(t.task_id);
+      tr.append(cell(t.task_id), cell(t.task), cell(t.department), cell(t.owner),
+                cell(t.deadline || 'none', late ? 'overdue' : ''), cell(t.status), cell(t.priority));
+    });
+    loadBottlenecks();
+  } catch (e) { say('Dashboard error: ' + e.message); }
+}
+
+async function loadBottlenecks() {
+  try {
+    const b = await api('/api/bottlenecks');
+    const box = $('bn'); box.replaceChildren(); box.className = '';
+    const line = document.createElement('p'); line.style.margin = '0 0 4px';
+    line.textContent = `Most overloaded owner: ${b.highlights.most_overloaded_owner || 'none'}  |  Slowest department: ${b.highlights.slowest_department || 'none'}`;
+    box.append(line);
+    const addTable = (title, headers, rows) => {
+      const h = document.createElement('h2'); h.textContent = title; h.style.marginTop = '14px';
+      const wrap = document.createElement('div'); wrap.style.overflow = 'auto';
+      const t = document.createElement('table'); const hr = t.insertRow();
+      headers.forEach(x => { const th = document.createElement('th'); th.textContent = x; hr.append(th); });
+      rows.forEach(r => { const tr = t.insertRow(); r.forEach(v => tr.append(cell(v))); });
+      wrap.append(t); box.append(h, wrap);
+    };
+    addTable('Workload per owner', ['Owner','Open','Overdue','High priority','Blocked'],
+      b.workload_by_owner.map(w => [w.owner, w.open_tasks, w.overdue, w.high_priority_open, w.blocked]));
+    addTable('Delay per department', ['Department','Overdue','Avg days late','Max days late'],
+      b.delay_by_department.map(d => [d.department, d.overdue, d.avg_days_overdue, d.max_days_overdue]));
+    const p = b.overdue_by_priority;
+    addTable('Overdue by priority', ['High','Medium','Low','Unknown'], [[p.High, p.Medium, p.Low, p.Unknown]]);
+    addTable('Needs attention first', ['ID','Task','Owner','Priority','Days late','Status'],
+      b.needs_attention_first.map(t => [t.task_id, t.task, t.owner, t.priority, t.days_overdue, t.status]));
+  } catch (e) { $('bn').textContent = 'Bottleneck analysis unavailable: ' + e.message; }
+}
+
+function render(run) {
+  $('resultBox').hidden = false; $('logBox').hidden = false;
+  $('status').textContent = run.status;
+  $('answer').textContent = run.final_answer;
+  $('log').textContent = run.log.map(e => {
+    const { ts, run_id, type, ...rest } = e;
+    return `${ts.slice(11)}  ${type.toUpperCase().padEnd(11)} ${JSON.stringify(rest)}`;
+  }).join('\n');
+
+  const box = $('pending'); box.replaceChildren();
+  $('pendingBox').hidden = run.pending.length === 0;
+  run.pending.forEach(a => {
+    const row = document.createElement('div'); row.className = 'pending';
+    const label = document.createElement('span'); label.textContent = a.description + (a.last_error ? '  [not applied: ' + a.last_error + ']' : '');
+    row.append(label);
+    if (a.status === 'pending') {
+      const yes = document.createElement('button'); yes.textContent = 'Approve';
+      const no = document.createElement('button'); no.textContent = 'Reject'; no.className = 'bad';
+      yes.onclick = () => decide(a.id, 'approve'); no.onclick = () => decide(a.id, 'reject');
+      const wrap = document.createElement('span'); wrap.className = 'row'; wrap.append(yes, no); row.append(wrap);
+    } else {
+      const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = a.status; row.append(tag);
+    }
+    box.append(row);
+  });
+}
+
+async function decide(actionId, decision) {
+  try {
+    const d = await api(`/api/runs/${runId}/actions/${actionId}/${decision}`, { method: 'POST' });
+    render(d.run); loadDashboard();
+  } catch (e) { say('Error: ' + e.message); }
+}
+
+$('run').onclick = async () => {
+  $('run').disabled = true; say('Agent is working...');
+  try {
+    const run = await api('/api/runs', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ goal: $('goal').value }) });
+    runId = run.id; render(run); say('');
+  } catch (e) { say('Error: ' + e.message); }
+  $('run').disabled = false;
+};
+
+$('upload').onclick = async () => {
+  const f = $('file').files[0];
+  if (!f) return say('Choose a file first.');
+  const form = new FormData(); form.append('file', f);
+  try { const r = await api('/api/upload', { method: 'POST', body: form }); say(`Loaded ${r.rows} tasks.`); loadDashboard(); }
+  catch (e) { say('Upload failed: ' + e.message); }
+};
+
+let lastMod = null;
+async function checkSource(force) {
+  if (document.hidden && !force) return;
+  try {
+    const s = await api('/api/source');
+    if (!s.exists) { $('srcInfo').textContent = 'File not found: ' + s.path; $('live').textContent = 'offline'; return; }
+    $('live').textContent = 'live';
+    $('srcInfo').textContent = `${s.path}  |  last saved ${new Date(s.modified * 1000).toLocaleTimeString()}  |  updates when you save the file in Excel`;
+    if (lastMod !== null && s.modified !== lastMod) loadDashboard();
+    lastMod = s.modified;
+  } catch (e) { $('live').textContent = 'offline'; }
+}
+
+$('useSrc').onclick = async () => {
+  try {
+    const r = await api('/api/source', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ path: $('srcPath').value }) });
+    say(`Now using ${r.path} (${r.rows} tasks).`); lastMod = null; await checkSource(true); loadDashboard();
+  } catch (e) { say('Could not use that file: ' + e.message); }
+};
+$('resetSrc').onclick = async () => {
+  try { await api('/api/source', { method: 'DELETE' }); say('Back to the default tracker.'); lastMod = null; await checkSource(true); loadDashboard(); }
+  catch (e) { say('Error: ' + e.message); }
+};
+
+setInterval(checkSource, 3000);
+checkSource(true);
+loadDashboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "id": "af511845",
+  "goal": "Identify overdue tasks and prepare a weekly operations report.",
+  "status": "failed",
+  "final_answer": "Agent failed: ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).', 'status': 'NOT_FOUND'}}",
+  "pending": [],
+  "log": [
+    {
+      "ts": "2026-10-15T10:19:23",
+      "run_id": "af511845",
+      "type": "goal",
+      "goal": "Identify overdue tasks and prepare a weekly operations report."
+    },
+    {
+      "ts": "2026-10-15T10:19:26",
+      "run_id": "af511845",
+      "type": "error",
+      "error": "Agent failed: ClientError: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).', 'status': 'NOT_FOUND'}}"
+    }
+  ]
+}
