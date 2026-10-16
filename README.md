@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Business Workflow Automation Agent
 
 An LLM agent that reads a business task tracker (Excel/CSV), decides which tools to use,
@@ -127,3 +128,7 @@ How they stay honest: both are plain pandas calculations. In `save_excel_report`
 
 Try it: `Which team is slowing us down, and who is overloaded? Save an Excel report.`
 If the report file is open in Excel when the agent tries to save it again, close it and rerun.
+=======
+# ai-workflow-agent
+An AI-powered workflow automation agent that analyzes business task data, identifies overdue tasks, prioritizes activities, and detects workflow bottlenecks. It supports spreadsheet analysis, automated report generation, and proposed task updates with human approval.
+>>>>>>> d6ed3cce48df3f296cb402bca5df43a9e4ecf063
